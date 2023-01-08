@@ -16,24 +16,15 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import Home from './src/components/home/Home';
 import PlayMusic from './src/screen/playMusic';
+import {NavigationContainer} from '@react-navigation/native';
+import RootNavigation from './src/components/rootNavigation/RootNavigation';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
 
-const App = () =>{
-  return (
-    <View style={styles.container}>
-      <PlayMusic />
-    </View>
-  );
+const App = () => {
+  return <RootNavigation />;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex:1,
-
-  },
-});
-
 export default App;

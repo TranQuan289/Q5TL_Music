@@ -1,12 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from 'react';
+import {View} from 'react-native';
+import Home from '../components/home/Home';
 
-export default function HomeMusic() {
+const HomeMusic = () => {
   return (
     <View>
-      <Text>H</Text>
+      <Home />
     </View>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({})
+export default HomeMusic;
