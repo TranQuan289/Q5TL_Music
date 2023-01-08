@@ -11,7 +11,7 @@ export default function PlayMusic({route,navigation}) {
     <View style={{flex:1,backgroundColor: '#222831',}}>
         {/* button back */}
         <View style={{margin:10,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-            <TouchableOpacity onPress={()=>{navigation.navigate('HomeTabs')}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('Home')}}>
                 <Ionicons name="chevron-back" size={35} color="#ffd369" />
             </TouchableOpacity>
             <Text style={{color:Colors.WHILE,fontSize:18}}>PLAYING FROM ALBUM XXX</Text>

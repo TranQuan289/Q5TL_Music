@@ -12,7 +12,6 @@ import Data from '../components/data'
 export default function HomeMusic({navigation}) {
 
   const renderItem = ({item}) =>{
-    console.log(item)
     return (
       <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate('PlayMusic',{
         songName:item.title,
@@ -20,23 +19,27 @@ export default function HomeMusic({navigation}) {
         songImage:item.artwork
         })
       }>
-        <Image source={item.artwork} style={{width:50,height:50,borderRadius:10}}/>
-        <View style={{marginLeft:10,justifyContent:'space-between',height:40}}>
+        <Image source={item.artwork} style={{width:70,height:70,borderRadius:10}}/>
+        <View style={styles.itemText}>
           <Text style={{color:Colors.WHILE,fontSize:18,}}>{item.title}</Text>
-          <Text style={{color:Colors.WHILE,fontSize:14,}}>{item.artist}</Text>
+          <Text style={{color:Colors.TEXT_COLOR,fontSize:14,}}>{item.artist}</Text>
+          <Text style={{color:Colors.TEXT_COLOR,fontSize:12,}}>{"Time:today"}</Text>
         </View>
-        <Ionicons name="ios-ellipsis-vertical-circle" size={30} color={Colors.primary} style={{position:'absolute',right:10,top:20}} />
+        <View style={styles.itemIcon}>
+          <Ionicons name="heart-outline" size={30} color={Colors.WHILE} />
+          <Ionicons name="ios-ellipsis-vertical-circle" size={30} color={Colors.WHILE}  />
+        </View>
       </TouchableOpacity>
     )
   }
 
   return (
     <View style={styles.container}>
-      <View style={{flexDirection:'row',width:'100%',alignItems:'center',marginTop:10}}>
-        <View style={{flex:1,marginRight:20}}>
+      <View style={styles.header}>
+        <View style={styles.headerSearch}>
           <SearchHome />
         </View>
-        <Text style={{color:Colors.primary,fontSize:26,fontWeight:'600',marginRight:20}}>Q4TL</Text>
+        <Text style={styles.headerText}>Q4TL</Text>
       </View>
       <FlatList
         style={{flex:1,padding:8}}
@@ -53,29 +56,38 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor: Colors.background,
   },
-  input: {
-    padding: 10,
-    paddingRight: 50,
-    flex: 1,
-    fontSize: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
+  header: {
+    flexDirection:'row',
+    width:'100%',
+    alignItems:'center',
+    marginTop:10
   },
-  iconStyle: {
-    padding: 10,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderLeftColor: Colors.primary,
-    borderLeftWidth: 1,
-    width: 50,
+  headerSearch: {
+    flex:1,
+    marginRight:20
+  },
+  headerText: {
+    color:Colors.primary,
+    fontSize:26,
+    fontWeight:'600',
+    marginRight:20
   },
   item: {
     flexDirection: 'row',
     padding: 8,
-    borderWidth: 1,
     borderColor: Colors.primary,
     margin:5,
     borderRadius:5,
   },
+  itemText: {
+    marginLeft:10,
+    justifyContent:'space-between',
+    height:60,
+  },
+  itemIcon: {
+    position:'absolute',
+    right:10,
+    top:20,
+    flexDirection:'row'
+  }
 })
