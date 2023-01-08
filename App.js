@@ -37,7 +37,7 @@ const App = () =>{
               iconName = focused ? 'library' : 'library-outline';
             } else if (route.name === 'Profile') {
               iconName = focused ? 'person' : 'person-outline';
-            } 
+            }
 
             // You can return any component that you like here!
             return <Ionicons name={iconName} size={30} color={color} />;
@@ -61,11 +61,11 @@ const App = () =>{
     //   <PlayMusic />
     // </View>
     <NavigationContainer>
-    <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
+    <Stack.Navigator initialRouteName='HomeTabs' screenOptions={{headerShown:false}}>
       <Stack.Screen name="HomeTabs" component={MyTabs} />
-      <Stack.Screen name="PlayMusic" component={PlayMusic} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="PlayMusic" component={PlayMusic} />
     </Stack.Navigator>
   </NavigationContainer>
   );

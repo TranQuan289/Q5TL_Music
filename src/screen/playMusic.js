@@ -6,12 +6,13 @@ import Colors from '../assets/utils/Color'
 
 export default function PlayMusic({route,navigation}) {
     const {songName,songArtist,songImage}= route.params
+
   return (
     <View style={{flex:1,backgroundColor: '#222831',}}>
         {/* button back */}
         <View style={{margin:10,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
             <TouchableOpacity onPress={()=>{navigation.navigate('HomeTabs')}}>
-                <Ionicons name="chevron-down" size={35} color="#ffd369" />
+                <Ionicons name="chevron-back" size={35} color="#ffd369" />
             </TouchableOpacity>
             <Text style={{color:Colors.WHILE,fontSize:18}}>PLAYING FROM ALBUM XXX</Text>
             <Ionicons name="ios-ellipsis-vertical-circle" size={30} color={Colors.primary} />
