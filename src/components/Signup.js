@@ -24,7 +24,7 @@ export default class login extends Component{
                                 returnKeyType="go"
                                 secureTextEntry
                                 ref={"txtpassword"}
-                                onSubmitEditing={()=> this.refs.txtRpassword.focus()}/>/>
+                                onSubmitEditing={()=> this.refs.txtRpassword.focus()}/>
                                 <TextInput style={styles.input}
                                 placeholder="Xác nhận mật khẩu"
                                 returnKeyType="go"
