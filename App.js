@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -24,9 +16,8 @@ import ProfileMusic from './src/screen/profileMusic';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from "react-native-vector-icons/Ionicons"
 import PlayMusic from './src/screen/playMusic'
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
+import Login from './src/screen/login';
+import Register from './src/screen/register'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,9 +61,11 @@ const App = () =>{
     //   <PlayMusic />
     // </View>
     <NavigationContainer>
-    <Stack.Navigator screenOptions={{headerShown:false}}>
+    <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown:false}}>
       <Stack.Screen name="HomeTabs" component={MyTabs} />
       <Stack.Screen name="PlayMusic" component={PlayMusic} />
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
   </NavigationContainer>
   );

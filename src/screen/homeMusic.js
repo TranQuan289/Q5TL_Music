@@ -36,7 +36,7 @@ export default function HomeMusic({navigation}) {
         <View style={{flex:1,marginRight:20}}>
           <SearchHome />
         </View>
-        <Text style={{color:Colors.primary,fontSize:26,fontWeight:'600',marginRight:20}}>Q5TL</Text>
+        <Text style={{color:Colors.primary,fontSize:26,fontWeight:'600',marginRight:20}}>Q4TL</Text>
       </View>
       <FlatList
         style={{flex:1,padding:8}}
