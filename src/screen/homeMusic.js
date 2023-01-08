@@ -5,6 +5,7 @@ import Colors from '../assets/utils/Color'
 import {windowHeight,windowWidth} from '../assets/utils/Dimentions'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import Fontisto from 'react-native-vector-icons/Fontisto'
 import SearchHome from '../components/searchHome';
 import Data from '../components/data'
 
@@ -36,10 +37,11 @@ export default function HomeMusic({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <Image source={require('../assets/images/imageSong.jpg')} style={{width:40,height:40,borderRadius:20}}/>
         <View style={styles.headerSearch}>
           <SearchHome />
         </View>
-        <Text style={styles.headerText}>Q4TL</Text>
+        <Fontisto name='bell' size={30} color={Colors.WHILE} style={{marginRight:10,marginTop:5}} />
       </View>
       <FlatList
         style={{flex:1,padding:8}}
@@ -60,7 +62,8 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     width:'100%',
     alignItems:'center',
-    marginTop:10
+    marginTop:10,
+    justifyContent:'space-between',
   },
   headerSearch: {
     flex:1,
