@@ -2,27 +2,31 @@ import { Image, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
 import React from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import  Slider  from "@react-native-community/slider"
+import Colors from '../assets/utils/Color'
 
-export default function PlayMusic() {
+export default function PlayMusic({route,navigation}) {
+    const {songName,songArtist,songImage}= route.params
   return (
     <View style={{flex:1,backgroundColor: '#222831',}}>
         {/* button back */}
-        <View style={{margin:10}}>
-            <TouchableOpacity onPress={()=>{}}>
+        <View style={{margin:10,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('HomeTabs')}}>
                 <Ionicons name="chevron-down" size={35} color="#ffd369" />
             </TouchableOpacity>
+            <Text style={{color:Colors.WHILE,fontSize:18}}>PLAYING FROM ALBUM XXX</Text>
+            <Ionicons name="ios-ellipsis-vertical-circle" size={30} color={Colors.primary} />
         </View>
         <View style={styles.container}>
         {/* image */}
         <View style={[styles.imageWrapper,styles.elavation]}>
-            <Image source={require('../assets/images/imageSong.jpg')}
+            <Image source={songImage}
                 style={styles.imageMusic}
             />
         </View>
         {/* song content */}
         <View>
-            <Text style={[styles.songContent,styles.songTitle]}>Song Name</Text>
-            <Text style={[styles.songContent,styles.songArtist]}>Song Artist Name</Text>
+            <Text style={[styles.songContent,styles.songTitle]}>{songName}</Text>
+            <Text style={[styles.songContent,styles.songArtist]}>{songArtist}</Text>
         </View>
 
         {/* slider */}

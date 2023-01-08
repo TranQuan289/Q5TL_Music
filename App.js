@@ -23,6 +23,7 @@ import ArtistMusic from './src/screen/artistMusic'
 import ProfileMusic from './src/screen/profileMusic';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from "react-native-vector-icons/Ionicons"
+import PlayMusic from './src/screen/playMusic'
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
@@ -53,6 +54,8 @@ const App = () =>{
           tabBarActiveTintColor: '#ffd369',
           tabBarInactiveTintColor: 'gray',
           headerShown:false,
+          tabBarInactiveBackgroundColor: '#222831',
+          tabBarActiveBackgroundColor: '#222831',
           // tabBarShowLabel:false,
         })}    
       >
@@ -69,6 +72,7 @@ const App = () =>{
     <NavigationContainer>
     <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name="HomeTabs" component={MyTabs} />
+      <Stack.Screen name="PlayMusic" component={PlayMusic} />
     </Stack.Navigator>
   </NavigationContainer>
   );
