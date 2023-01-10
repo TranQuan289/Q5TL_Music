@@ -1,15 +1,19 @@
-import { StyleSheet, Text, View,TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View,TouchableOpacity, Image} from 'react-native'
+import React,{useContext} from 'react'
 import Colors from '../assets/utils/Color'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { windowHeight } from '../assets/utils/Dimentions'
+import { AuthContext } from '../navigation/AuthProvider'
 
-export default function ProfileMusic() {
+export default function ProfileMusic({navigation}) {
+
+  const {logout} = useContext(AuthContext)
+  
   return (
     <View style={styles.container}>
       <View style={styles.Header}>
         <TouchableOpacity style={{position:'absolute',right:10,top:10}}
-            onPress={()=>{navigation.navigate('Login')}}>
+            onPress={()=>{ logout()}}>
           <Ionicons name="log-out-outline" size={35} color={Colors.WHILE}/>
         </TouchableOpacity>
         <View style={{flexDirection:'row',alignItems:'center',margin:10,marginTop:40}}>

@@ -8,18 +8,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import Fontisto from 'react-native-vector-icons/Fontisto'
 import SearchHome from '../components/searchHome';
 import Data from '../components/data'
+import Icon from 'react-native-vector-icons/AntDesign';
 
 
 export default function HomeMusic({navigation}) {
 
   const renderItem = ({item}) =>{
     return (
-      <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate('PlayMusic',{
-        songName:item.title,
-        songArtist:item.artist,
-        songImage:item.artwork
-        })
-      }>
+      <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate('PlayMusic',item
+      )}>
         <Image source={item.artwork} style={{width:70,height:70,borderRadius:10}}/>
         <View style={styles.itemText}>
           <Text style={{color:Colors.WHILE,fontSize:18,}}>{item.title}</Text>
@@ -27,8 +24,8 @@ export default function HomeMusic({navigation}) {
           <Text style={{color:Colors.TEXT_COLOR,fontSize:12,}}>{"Time:today"}</Text>
         </View>
         <View style={styles.itemIcon}>
-          <Ionicons name="heart-outline" size={30} color={Colors.WHILE} />
-          <Ionicons name="ios-ellipsis-vertical-circle" size={30} color={Colors.WHILE}  />
+          <Ionicons name="ios-heart-outline" size={30} color={Colors.WHILE} />
+          <Ionicons name="ios-ellipsis-vertical-sharp" size={30} color={Colors.WHILE} />
         </View>
       </TouchableOpacity>
     )
@@ -37,7 +34,7 @@ export default function HomeMusic({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={require('../assets/images/imageSong.jpg')} style={{width:40,height:40,borderRadius:20}}/>
+        <Image source={require('../assets/images/imageSong.jpg')} style={{width:40,height:40,borderRadius:20,marginLeft:10}}/>
         <View style={styles.headerSearch}>
           <SearchHome />
         </View>
@@ -77,7 +74,6 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: 'row',
-    padding: 8,
     borderColor: Colors.primary,
     margin:5,
     borderRadius:5,
@@ -88,9 +84,9 @@ const styles = StyleSheet.create({
     height:60,
   },
   itemIcon: {
-    position:'absolute',
-    right:10,
-    top:20,
+    marginLeft:'auto',
+    marginRight:0,
+    alignItems:'center',
     flexDirection:'row'
   }
 })

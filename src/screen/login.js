@@ -33,6 +33,7 @@ export default  Login = ({ navigation}) => {
     }
 
     const [getPassVisible, setPassVisible]= useState(false)
+    const {login} =useContext(AuthContext)
 
     return (
       <View style={styles.container}>
@@ -79,7 +80,7 @@ export default  Login = ({ navigation}) => {
         <FormButton 
           buttonTitle="Login"
           onPress={() => {
-           navigation.navigate('HomeTabs')
+            login()
           }}
         />
 
