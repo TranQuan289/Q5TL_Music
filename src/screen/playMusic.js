@@ -1,12 +1,39 @@
 import { Image, StyleSheet, Text, View,TouchableOpacity,ScrollView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import  Slider  from "@react-native-community/slider"
 import Colors from '../assets/utils/Color'
 import Fontisto from 'react-native-vector-icons/Fontisto'
+import Feather from 'react-native-vector-icons/Feather'
+import { TRACKS } from '../components/testMusic'
+import Video from 'react-native-video'
 
-export default function PlayMusic({route,navigation}) {
-    const  song= route.params
+export default function PlayMusic({navigation}) {
+    const [selectTrack,setSelectTrack]=useState(4)
+    const currentTrack= TRACKS[selectTrack]
+    const [pause,setPause] = useState(false)
+    const [song,setSong] =useState(false)
+
+    console.log({currentTrack})
+
+    const togglePlayPauseBtn = () =>{
+        setPause(!pause)
+    }
+
+    const playNextSong = () => {
+        if(selectTrack === TRACKS.length-1){
+            setSelectTrack(0)
+        } else {
+            setSelectTrack(selectTrack +1)
+        }
+    }
+    const playPrevSong = () =>{
+        if(selectTrack === 0){
+            setSelectTrack(TRACKS.length -1)
+        } else {
+            setSelectTrack(selectTrack -1)
+        }
+    }
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -21,14 +48,14 @@ export default function PlayMusic({route,navigation}) {
         <View style={styles.container}>
             {/* image */}
             <View style={[styles.imageWrapper,styles.elavation]}>
-                <Image source={song.artwork}
+                <Image source={{uri: currentTrack.albumArtUrl}}
                     style={styles.imageMusic}
                 />
             </View>
             {/* song content */}
             <View>
-                <Text style={[styles.songContent,styles.songTitle]}>{song.title}</Text>
-                <Text style={[styles.songContent,styles.songArtist]}>{song.artist}</Text>
+                <Text style={[styles.songContent,styles.songTitle]}>{currentTrack.title}</Text>
+                <Text style={[styles.songContent,styles.songArtist]}>{currentTrack.artist}</Text>
             </View>
 
             {/* slider */}
@@ -46,33 +73,39 @@ export default function PlayMusic({route,navigation}) {
             </View>
             {/* slider progress durations */}
             <View style={styles.progressLevelDurations}>
-                <Text style={styles.progressLabelText}>00:00</Text>
-                <Text style={styles.progressLabelText}>00:00</Text>
+                <Text style={styles.progressLabelText}>00:30</Text>
+                <Text style={styles.progressLabelText}>04:00</Text>
             </View>
 
             {/* music controls */}
             <View style={styles.controls}>
-                <TouchableOpacity onPress={()=>{}}>
-                    <Fontisto name="random" size={20} color={Colors.WHILE} />
+                <TouchableOpacity style={{width:30,height:30,justifyContent:'center',alignItems:'center'}} onPress={()=>{}}>
+                    <Fontisto name="random" size={15} color={Colors.WHILE} />
                 </TouchableOpacity>
                 <View style={styles.musicControlsContainer}>
                 
-                    <TouchableOpacity onPress={()=>{}}>
+                    <TouchableOpacity onPress={()=>{playPrevSong(),setSong(!song)}}>
                         <Ionicons name="play-skip-back-outline" size={35} color="#ffd369" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={()=>{}}>
-                        <Ionicons name="ios-pause-circle" size={75} color="#ffd369" />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={()=>{}}>
+                    {pause? 
+                        <TouchableOpacity onPress={()=>{togglePlayPauseBtn()}}>
+                            <Ionicons name="ios-play-circle" size={75} color="#ffd369" />
+                        </TouchableOpacity>
+                    :
+                        <TouchableOpacity onPress={()=>{togglePlayPauseBtn()}}>
+                            <Ionicons name="ios-pause-circle" size={75} color="#ffd369" />
+                        </TouchableOpacity>
+                    }
+                    <TouchableOpacity onPress={()=>{playNextSong(),setSong(!song)}}>
                         <Ionicons name="play-skip-forward-outline" size={35} color="#ffd369" />
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={()=>{}}>
-                    <Ionicons name="repeat" size={35} color={Colors.WHILE} />
+                    <Feather name="repeat" size={20} color={Colors.WHILE} />
                 </TouchableOpacity>
             </View>
+            <Video source={song? require('../assets/images/song1.mp3'):require('../assets/images/song2.mp3')} audioOnly paused={pause}/>
             <View style={styles.lyrics}>
                 <Text style={styles.lyricsText}>Lyrics:</Text>
                 <ScrollView style={{flex:1,marginBottom:10}} nestedScrollEnabled={true}>

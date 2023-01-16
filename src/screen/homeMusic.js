@@ -15,8 +15,7 @@ export default function HomeMusic({navigation}) {
 
   const renderItem = ({item}) =>{
     return (
-      <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate('PlayMusic',item
-      )}>
+      <TouchableOpacity style={styles.item} onPress={()=>navigation.navigate('PlayMusic')}>
         <Image source={item.artwork} style={{width:70,height:70,borderRadius:10}}/>
         <View style={styles.itemText}>
           <Text style={{color:Colors.WHILE,fontSize:18,}}>{item.title}</Text>
