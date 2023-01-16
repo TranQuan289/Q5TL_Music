@@ -7,131 +7,208 @@ import {
   Text,
   TouchableOpacity,
   View,
+  TextInput,
+  SafeAreaView,
+  Button,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const lists = [
-  {
-    avata:
-      'https://avatar-ex-swe.nixcdn.com/song/2019/12/25/6/3/c/6/1577268566289_640.jpg',
-    nameMusic: 'Mascara',
-    nameSinger: 'Chillies',
-    time: 'Hôm nay',
-  },
-  {
-    avata:
-      'https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/5/d/7/6/5d76f8f71c270b8e2adb413ae524037c.jpg',
-    nameMusic: 'Về bên anh',
-    nameSinger: 'J97',
-    time: 'Hôm nay',
-  },
-  {
-    avata:
-      'https://avatar-ex-swe.nixcdn.com/song/2018/02/26/f/8/3/d/1519612532813_640.jpg',
-    nameMusic: 'Một năm mới bình an',
-    nameSinger: 'Sơn Tùng M-TP',
-    time: 'Hôm nay',
-  },
-  {
-    avata:
-      'https://avatar-ex-swe.nixcdn.com/song/2022/12/07/5/6/5/7/1670385361814_640.jpg',
-    nameMusic: 'Don’t Côi',
-    nameSinger: 'RPT Orijinn & Ronboogz',
-    time: 'Hôm nay',
-  },
-  {
-    avata: 'https://i1.sndcdn.com/artworks-000319063860-5qw7nd-t500x500.jpg',
-    nameMusic: 'Ghé qua',
-    nameSinger: 'Dick x Tofu x PC',
-    time: 'Hôm nay',
-  },
-  {
-    avata:
-      'https://thanhtay.edu.vn/wp-content/uploads/2021/05/Cau-truc-hope.jpg',
-    nameMusic: 'Hope',
-    nameSinger: 'Reddy',
-    time: 'Hôm nay',
-  },
-  {
-    avata: 'https://i.ytimg.com/vi/V5GS5ANG96M/maxresdefault.jpg',
-    nameMusic: '3107',
-    nameSinger: 'W/n',
-    time: 'Hôm nay',
-  },
-  {
-    avata: 'https://i.ytimg.com/vi/dLQe4qEfVJw/maxresdefault.jpg',
-    nameMusic: '1 Phút',
-    nameSinger: 'Andiez',
-    time: 'Hôm nay',
-  },
-  {
-    avata: 'https://i.ytimg.com/vi/nHK0u40Ompc/maxresdefault.jpg',
-    nameMusic: 'Cô gái m52',
-    nameSinger: 'HuyR ft. Tùng Viu',
-    time: 'Hôm nay',
-  },
-  {
-    avata: 'https://i.ytimg.com/vi/rBS8_gEbNWg/maxresdefault.jpg',
-    nameMusic: 'Nụ Cười 18 20',
-    nameSinger: ' Doãn Hiếu',
-    time: 'Hôm nay',
-  },
-];
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+
 const ListMusic = () => {
+  const [heart, setHeart] = useState(false);
+  const [accessToken, setAccessToken] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [searchInput, setSearchInput] = useState('Taylor Swirt', 'MERO');
+
   const navigation = useNavigation();
-  const handleTapconveration = () => {
-    navigation.navigate('PlayList');
+
+  const handleTapconveration = index => {
+    navigation.navigate('PlayList', albums, index);
   };
 
-  const [heart, setHeart] = useState(false);
+  useEffect(() => {
+    axios
+      .get('https://theaudiodb.com/api/v1/json/2/mvid.php?i=112024')
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
+  useEffect(() => {
+    // API access token
+
+    const authParameters = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body:
+        'grant_type=client_credentials&client_id=' +
+        process.env.CLIENT_ID +
+        '&client_secret=' +
+        process.env.CLIENT_SECRET,
+    };
+    fetch('https://accounts.spotify.com/api/token', authParameters)
+      .then(result => result.json())
+      .then(data => {
+        console.log(data.access_token);
+        setAccessToken(data.access_token);
+      })
+      .catch(err => console.error(err));
+    async function search() {
+      console.log('Search for ' + searchInput);
+
+      // Get request using search to get the Artist ID
+      const searchParameters = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + accessToken,
+        },
+      };
+
+      //
+      const artistID = await fetch(
+        'https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist',
+        searchParameters,
+      )
+        .then(response => response.json())
+        .then(data => {
+          {
+            console.log(data.artists.items[0].id);
+            return data.artists.items[0].id;
+          }
+        })
+        .catch(err => console.log(err));
+      console.log(' Atrist ID is ' + artistID);
+      // Get request with artist Id grad all the albums from that artist
+
+      const returnAlbums = await fetch(
+        'https://api.spotify.com/v1/artists/' +
+          artistID +
+          '/albums' +
+          '?include_groups=album&market=US&limit=50',
+        searchParameters,
+      )
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.items);
+          setAlbums(data.items);
+        })
+        .catch(err => console.log(err));
+    }
+    search();
+  }, []);
+  // SEARCH
+  console.log(albums);
   return (
-    <ScrollView>
-      {lists.map((list, index) => {
-        return (
-          <View key={index}>
-            <TouchableOpacity onPress={handleTapconveration}>
-              <View style={styles.rootView}>
-                <View style={styles.image}>
-                  <Image
-                    style={{height: '100%', width: '100%', resizeMode: 'cover'}}
-                    source={{uri: list.avata}}
-                  />
-                </View>
-                <View style={styles.wrapperText}>
-                  <Text style={styles.textMusic}>{list.nameMusic}</Text>
-                  <Text style={styles.textName}>{list.nameSinger}</Text>
-                  <Text style={styles.textTime}>{list.time}</Text>
-                </View>
-                <View style={styles.icon}>
-                  {heart ? (
-                    <AntDesign
-                      onPress={() => setHeart(!heart)}
-                      name="heart"
-                      style={{color: 'red', fontSize: 20}}
-                    />
-                  ) : (
-                    <AntDesign
-                      onPress={() => setHeart(!heart)}
-                      name="hearto"
-                      style={{color: 'black', fontSize: 20}}
-                    />
-                  )}
-                  <Ionicons
-                    name="ellipsis-vertical"
-                    style={{color: 'black', fontSize: 20, marginLeft: 10}}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
+    <>
+      <View style={{marginTop: 10}}>
+        <SafeAreaView style={styles.safeAreaView}>
+          <View>
+            <Image
+              style={{
+                height: 35,
+                width: 35,
+                resizeMode: 'cover',
+                borderRadius: 50,
+              }}
+              source={{
+                uri: 'https://i1.sndcdn.com/artworks-000102769935-nkultb-t500x500.jpg',
+              }}
+            />
           </View>
-        );
-      })}
-    </ScrollView>
+          <View style={styles.wrapperInput}>
+            <AntDesign
+              onPress={() => setHeart(!heart)}
+              name="search1"
+              style={{color: '#B0B0B1', fontSize: 20, marginLeft: 10}}
+            />
+            <SafeAreaView>
+              <TextInput
+                style={styles.input}
+                // onChangeText={searchFilterFunction}
+                // value={number}
+                placeholder="Tìm kiếm..."
+                type="input"
+                onKeyPress={e => {
+                  if (e.key === 'enter') {
+                    search();
+                  }
+                }}
+                // onChangeText={text => setSearchInput(text)}
+              />
+            </SafeAreaView>
+          </View>
+          <View>
+            <MaterialCommunityIcons
+              name="bell-ring-outline"
+              style={{color: 'black', fontSize: 30}}
+            />
+          </View>
+          <Button
+            onPress={() => {
+              search();
+            }}
+            title="Search"
+          />
+        </SafeAreaView>
+      </View>
+      <ScrollView>
+        {albums.map((album, index) => {
+          return (
+            <View key={index}>
+              <TouchableOpacity onPress={handleTapconveration(index)}>
+                <View style={styles.rootView}>
+                  <View style={styles.image}>
+                    <Image
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                        resizeMode: 'cover',
+                      }}
+                      source={{uri: album.images[0].url}}
+                    />
+                  </View>
+                  <View style={styles.wrapperText}>
+                    <Text style={styles.textMusic}>{album.name}</Text>
+                    <Text style={styles.textName}>{album.release_date}</Text>
+                  </View>
+                  <View style={styles.icon}>
+                    {heart ? (
+                      <AntDesign
+                        onPress={() => setHeart(!heart)}
+                        name="heart"
+                        style={{color: 'red', fontSize: 20}}
+                      />
+                    ) : (
+                      <AntDesign
+                        onPress={() => setHeart(!heart)}
+                        name="hearto"
+                        style={{color: 'black', fontSize: 20}}
+                      />
+                    )}
+                    <Ionicons
+                      name="ellipsis-vertical"
+                      style={{color: 'black', fontSize: 20, marginLeft: 10}}
+                    />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </ScrollView>
+    </>
   );
 };
 
-export default ListMusic;
 const styles = StyleSheet.create({
   rootView: {
     flex: 1,
@@ -168,4 +245,25 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
+  safeAreaView: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  wrapperInput: {
+    width: '70%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    width: '100%',
+    color: 'black',
+  },
 });
+
+export default ListMusic;

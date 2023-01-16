@@ -1,9 +1,10 @@
-import { Image, StyleSheet, Text, View,TouchableOpacity } from 'react-native'
+import { Image, StyleSheet, Text, View,TouchableOpacity, ProgressViewIOSComponent } from 'react-native'
 import React from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import  Slider  from "@react-native-community/slider"
 
-export default function PlayMusic() {
+export default function PlayMusic({props}) {
+    
   return (
     <View style={{flex:1,backgroundColor: '#222831',}}>
         {/* button back */}

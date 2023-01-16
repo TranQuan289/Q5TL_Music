@@ -7,7 +7,6 @@ import Search from './Search';
 const Home = () => {
   return (
     <View style={styles.container}>
-      <Search />
       <ListMusic />
     </View>
   );
