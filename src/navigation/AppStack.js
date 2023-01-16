@@ -9,7 +9,6 @@ import PlayMusic from '../screen/playMusic'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from "react-native-vector-icons/Ionicons"
-import Colors from '../assets/utils/Color'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

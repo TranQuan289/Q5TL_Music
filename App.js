@@ -3,7 +3,7 @@ import Providers from './src/navigation'
 
 const App = () =>{
   return (
-    <Providers />
+      <Providers />
   );
 };
 

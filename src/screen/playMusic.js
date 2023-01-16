@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View,TouchableOpacity,ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons"
 import  Slider  from "@react-native-community/slider"
 import Colors from '../assets/utils/Color'
@@ -8,13 +8,16 @@ import Feather from 'react-native-vector-icons/Feather'
 import { TRACKS } from '../components/testMusic'
 import Video from 'react-native-video'
 
-export default function PlayMusic({navigation}) {
-    const [selectTrack,setSelectTrack]=useState(4)
+const CLIENT_ID = '35944a520f8c43cdb73fad9b6909da4e';
+const CLIENT_SECRET = '778535db4d7a43e18f149aefeb1a3223';
+
+export default function PlayMusic({route,navigation}) {
+    const {album} = route.params
+    console.log(album)
+    const [selectTrack,setSelectTrack]=useState(0)
     const currentTrack= TRACKS[selectTrack]
     const [pause,setPause] = useState(false)
     const [song,setSong] =useState(false)
-
-    console.log({currentTrack})
 
     const togglePlayPauseBtn = () =>{
         setPause(!pause)
@@ -34,8 +37,7 @@ export default function PlayMusic({navigation}) {
             setSelectTrack(selectTrack -1)
         }
     }
-
-  return (
+    return (
     <ScrollView style={styles.scrollView}>
         {/* button back */}
         <View style={styles.header}>
@@ -48,14 +50,14 @@ export default function PlayMusic({navigation}) {
         <View style={styles.container}>
             {/* image */}
             <View style={[styles.imageWrapper,styles.elavation]}>
-                <Image source={{uri: currentTrack.albumArtUrl}}
+                <Image source={{uri: album.images[0].url}}
                     style={styles.imageMusic}
                 />
             </View>
             {/* song content */}
             <View>
-                <Text style={[styles.songContent,styles.songTitle]}>{currentTrack.title}</Text>
-                <Text style={[styles.songContent,styles.songArtist]}>{currentTrack.artist}</Text>
+                <Text style={[styles.songContent,styles.songTitle]}>{album.name}</Text>
+                <Text style={[styles.songContent,styles.songArtist]}>{album.release_date}</Text>
             </View>
 
             {/* slider */}
