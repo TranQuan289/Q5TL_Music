@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext,useEffect, useState } from 'react'
 import { AuthContext } from '../navigation/AuthProvider'
 import {View, Dimensions, StyleSheet, Text, Image, TouchableOpacity, Linking, ScrollView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
-import React,{useContext} from 'react'
+import Colors from '../assets/utils/Color'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+
+
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
 
@@ -39,10 +41,11 @@ const optionsfoll = {
     });
   },[]
   )
-  
+  const [apiProfile,setApiPro]=useState([])
   const [apiList,setApi]=useState([])
   useEffect(()=>{
       axios.request(options).then(function (response) {
+        setApiPro(response.data)
         setApi(response.data.public_playlists)
         console.log(response.data.public_playlists);
       }).catch(function (error) {
@@ -50,37 +53,20 @@ const optionsfoll = {
       });
     },[]
   )
-  const [apiProfile,setApiPro]=useState([])
-  useEffect(()=>{
-      axios.request(options).then(function (response) {
-        setApiPro(response.data)
-        console.log(response.data);
-      }).catch(function (error) {
-        console.error(error);
-      });
-    },[]
-  )
   return (
-    <View>
-      {/* {
-          apiList?.map((apis,index)=>{
-            return (             
-              <View key={index}>
-                <Text> {apis.name}</Text>
-              </View>
-            )
-          }
-          )
-      } */}
-      <View >
-        {/* <Text> {apiProfile.name}</Text> */}
-      </View>
+    <View style={{background: '#222831',}}>
       <View style={styles.upperSection}>
         <LinearGradient
           start={{x: 0, y: 0}}
           colors={['#ff0291', '#2d00f7']}
           style={styles.linearGradient}>
             <View style={justifyContent= 'center'}>
+              <TouchableOpacity style={{position:'absolute',right:10,top:10}}
+                onPress={
+                  ()=>{ logout()}
+                  }>
+                <Ionicons name="log-out-outline" size={35} color={Colors.WHILE}/>
+              </TouchableOpacity>
               <Image
                 source={{
 
@@ -92,7 +78,6 @@ const optionsfoll = {
             </View>
         </LinearGradient> 
       </View>
-
       <View style={styles.bottomSection}>
         <View style={styles.title}>
           <View style={styles.titlefollo}>
@@ -216,7 +201,8 @@ const styles = StyleSheet.create({
     // backgroundColor:'blue',
   },
   line:{
-    backgroundColor:'#E5E5E5',
+    background: '#222831',
+    // backgroundColor:'#E5E5E5',
     height:1,
     marginHorizontal:15
   },
@@ -240,12 +226,14 @@ const styles = StyleSheet.create({
   },
 
   upperSection: {
+    
     width: deviceWidth,
     height: deviceHeight / 5,
   },
   bottomSection: {
     // alignItems: 'center',
     width: deviceWidth,
+    //  backgroundColor:'#222831',
     height: 3 * (deviceHeight / 4),
   },
   linearGradient: {
@@ -261,7 +249,7 @@ const styles = StyleSheet.create({
   imgMusic:{
     height: 60,
     width: 60,
-    backgroundColor:'#E5E5E5',
+    
     borderRadius: 70,
     marginBottom:20
   },
