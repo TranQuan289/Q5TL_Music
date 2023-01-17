@@ -16,15 +16,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../assets/utils/Color';
 
-const CLIENT_ID = '35944a520f8c43cdb73fad9b6909da4e';
-const CLIENT_SECRET = '778535db4d7a43e18f149aefeb1a3223';
 
 
 const HomeMusic = ({navigation}) => {
   const [heart, setHeart] = useState(false);
   const [accessToken, setAccessToken] = useState([]);
   const [albums, setAlbums] = useState([]);
-  const [searchInput, setSearchInput] = useState('Tayler Swist');
+  const [searchInput, setSearchInput] = useState('Taylor Swift');
 
   const handleTapconveration = (album) => {
     console.log(album)
@@ -42,20 +40,18 @@ const HomeMusic = ({navigation}) => {
       },
       body:
         'grant_type=client_credentials&client_id=' +
-        CLIENT_ID +
+        process.env.CLIENT_ID +
         '&client_secret=' +
-        CLIENT_SECRET,
+        process.env.CLIENT_SECRET,
     };
     fetch('https://accounts.spotify.com/api/token', authParameters)
       .then(result => result.json())
       .then(data => {
-        console.log(data.access_token);
+        console.log(data.access_token)
         setAccessToken(data.access_token);
       })
       .catch(err => console.error(err));
   }, []);
-  // SEARCH
-
   async function search() {
     console.log('Search for ' + searchInput);
     // Get request using search to get the Artist ID
@@ -75,7 +71,7 @@ const HomeMusic = ({navigation}) => {
       .then(response => response.json())
       .then(data => {
         {
-          console.log(data.artists.items[0].id);
+          console.log(data.artists.items[0].id)
           return data.artists.items[0].id;
         }
       })
@@ -92,15 +88,16 @@ const HomeMusic = ({navigation}) => {
     )
       .then(response => response.json())
       .then(data => {
-        console.log(data.items);
         setAlbums(data.items);
       })
       .catch(err => console.log(err));
   }
+  // SEARCH
+useEffect(()=>{
+  search()
+},[])
   // console.log(albums);
-  useEffect(()=>{
-    search()
-  },[])
+
   return (
     <View style={{flex:1,backgroundColor: Colors.background,}}>
       <View style={{marginTop: 10}}>
