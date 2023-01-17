@@ -1,6 +1,7 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
-import ConversationItem from '../component/ConversationItem'
+import Colors from '../assets/utils/Color'
+import ConversationItem from '../components/ConversationItem'
 
 const conversations = [
     {
@@ -106,7 +107,7 @@ export default function ArtistMusic() {
     return (
         <View style={styles.rootView}>
             <View >
-                <Text style={{ fontSize: 30, fontWeight: 'bold', padding: 20 }}>Nghệ Sĩ</Text>
+                <Text style={{ fontSize: 30, fontWeight: 'bold', padding: 20, color: Colors.primary }}>Nghệ Sĩ</Text>
 
             </View>
             <FlatList
@@ -122,7 +123,8 @@ export default function ArtistMusic() {
 
 const styles = StyleSheet.create({
     rootView: {
-        flex: 1
+        flex: 1,
+        backgroundColor: Colors.background
     },
     nameText: {
         fontSize: 24,
