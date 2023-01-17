@@ -24,6 +24,8 @@ const HomeMusic = ({navigation}) => {
   const [albums, setAlbums] = useState([]);
   const [searchInput, setSearchInput] = useState('Taylor Swift');
 
+ 
+
   const handleTapconveration = (album) => {
     console.log(album)
     navigation.navigate('PlayMusic',{album});
@@ -93,6 +95,16 @@ const HomeMusic = ({navigation}) => {
       .catch(err => console.log(err));
   }
   // SEARCH
+
+  const filterName = albums?.filter((album) =>{
+    if(filterName === ''){
+      return album
+    }else if (
+      album.name.includes(filterName)
+    ){
+      return album
+    }
+  })
 useEffect(()=>{
   search()
 },[])
@@ -102,7 +114,7 @@ useEffect(()=>{
     <View style={{flex:1,backgroundColor: Colors.background,}}>
       <View style={{marginTop: 10}}>
         <SafeAreaView style={styles.safeAreaView}>
-          {/* <View>
+          <View>
             <Image
               style={{
                 height: 35,
@@ -114,13 +126,9 @@ useEffect(()=>{
                 uri: 'https://i1.sndcdn.com/artworks-000102769935-nkultb-t500x500.jpg',
               }}
             />
-          </View> */}
+          </View>
           <View style={styles.wrapperInput}>
-            <AntDesign
-              onPress={() => setHeart(!heart)}
-              name="search1"
-              style={{color: '#B0B0B1', fontSize: 20, marginLeft: 10}}
-            />
+            
             <SafeAreaView>
               <TextInput
                 style={styles.input}
@@ -133,22 +141,22 @@ useEffect(()=>{
                     search();
                   }
                 }}
-                // onChangeText={text => setSearchInput(text)}
+                onChangeText={e => filterName(e.target.value)}
               />
             </SafeAreaView>
+            
           </View>
           <View>
-            <MaterialCommunityIcons
-              name="bell-ring-outline"
-              style={{color: 'black', fontSize: 30}}
+            <AntDesign
+              // onPress={() => setHeart(!heart)}
+              name="search1"
+              style={{color: '#B0B0B1', fontSize: 20, backgroundColor:'red', padding:10, marginRight:10}}
             />
           </View>
-          <Button
-            onPress={() => {
-              search();
-            }}
+          {/* <Button
+            
             title="Search"
-          />
+          /> */}
         </SafeAreaView>
       </View>
       <ScrollView>
