@@ -1,7 +1,7 @@
 import React from 'react';
-import Providers from './src/navigation'
+import Providers from './src/navigation';
 
-const App = () =>{
+const App = () => {
   return (
       <Providers />
   );
