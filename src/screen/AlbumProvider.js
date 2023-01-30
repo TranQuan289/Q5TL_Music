@@ -1,14 +1,12 @@
-import {ThemeProvider} from '@react-navigation/native';
-import {createContext, useState,useEffect} from 'react';
+import {createContext, useState, useEffect} from 'react';
 
 const AlbumsContext = createContext();
+const CLIENT_ID = '35944a520f8c43cdb73fad9b6909da4e';
+const CLIENT_SECRET = '778535db4d7a43e18f149aefeb1a3223';
 
 function AlbumsProvider({children}) {
-//   const [albums, setAlbums] = useState([]);
-    const [heart, setHeart] = useState(false);
-    const [accessToken, setAccessToken] = useState([]);
-    const [albums, setAlbums] = useState([]);
-    const [searchInput, setSearchInput] = useState('Tayler Swist');
+  const [accessToken, setAccessToken] = useState([]);
+  const [albums, setAlbums] = useState([]);
   useEffect(() => {
     // API access token
 
@@ -26,16 +24,12 @@ function AlbumsProvider({children}) {
     fetch('https://accounts.spotify.com/api/token', authParameters)
       .then(result => result.json())
       .then(data => {
-        console.log(data.access_token);
+        // console.log(data.access_token);
         setAccessToken(data.access_token);
       })
       .catch(err => console.error(err));
   }, []);
-  // SEARCH
-
   async function search() {
-    console.log('Search for ' + searchInput);
-    // Get request using search to get the Artist ID
     const searchParameters = {
       method: 'GET',
       headers: {
@@ -46,30 +40,27 @@ function AlbumsProvider({children}) {
 
     //
     const artistID = await fetch(
-      'https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist',
+      'https://api.spotify.com/v1/search?q=' + 'Taylor Swift' + '&type=artist',
       searchParameters,
     )
       .then(response => response.json())
       .then(data => {
         {
-          console.log(data.artists.items[0].id);
           return data.artists.items[0].id;
         }
       })
       .catch(err => console.log(err));
-    console.log(' Atrist ID is ' + artistID);
-    // Get request with artist Id grad all the albums from that artist
+    console.log(' Atrist ID is ' + '06HL4z0CvFAxyc27GXpf02');
 
     const returnAlbums = await fetch(
       'https://api.spotify.com/v1/artists/' +
-        artistID +
+        '06HL4z0CvFAxyc27GXpf02' +
         '/albums' +
         '?include_groups=album&market=US&limit=50',
-      +searchParameters,
+      searchParameters,
     )
       .then(response => response.json())
       .then(data => {
-        console.log(data.items);
         setAlbums(data.items);
       })
       .catch(err => console.log(err));
@@ -79,10 +70,10 @@ function AlbumsProvider({children}) {
   }, []);
   const context = {
     albums,
+    setAlbums,
   };
-  console.log(albums)
   return (
-    <ThemeProvider.Provider value={context}>{children}</ThemeProvider.Provider>
+    <AlbumsContext.Provider value={context}>{children}</AlbumsContext.Provider>
   );
 }
 export {AlbumsContext, AlbumsProvider};

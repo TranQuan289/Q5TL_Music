@@ -1,4 +1,4 @@
-import React, {useEffect, useState, createContext} from 'react';
+import React, {useState, useContext, version} from 'react';
 import {
   Image,
   ScrollView,
@@ -12,106 +12,34 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../assets/utils/Color';
-
-
+import {AlbumsContext} from './AlbumProvider';
 
 const HomeMusic = ({navigation}) => {
+  const context = useContext(AlbumsContext);
   const [heart, setHeart] = useState(false);
-  const [accessToken, setAccessToken] = useState([]);
-  const [albums, setAlbums] = useState([]);
-  const [searchInput, setSearchInput] = useState('Taylor Swift');
+  const [searchText, setSearchText] = useState('');
 
- 
-
-  const handleTapconveration = (album) => {
-    console.log(album)
-    navigation.navigate('PlayMusic',{album});
+  const handleTapconveration = album => {
+    navigation.navigate('PlayMusic', {album});
   };
-  
 
-  useEffect(() => {
-    // API access token
-
-    const authParameters = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body:
-        'grant_type=client_credentials&client_id=' +
-        process.env.CLIENT_ID +
-        '&client_secret=' +
-        process.env.CLIENT_SECRET,
-    };
-    fetch('https://accounts.spotify.com/api/token', authParameters)
-      .then(result => result.json())
-      .then(data => {
-        console.log(data.access_token)
-        setAccessToken(data.access_token);
-      })
-      .catch(err => console.error(err));
-  }, []);
-  async function search() {
-    console.log('Search for ' + searchInput);
-    // Get request using search to get the Artist ID
-    const searchParameters = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + accessToken,
-      },
-    };
-
-    //
-    const artistID = await fetch(
-      'https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist',
-      searchParameters,
-    )
-      .then(response => response.json())
-      .then(data => {
-        {
-          console.log(data.artists.items[0].id)
-          return data.artists.items[0].id;
-        }
-      })
-      .catch(err => console.log(err));
-    console.log(' Atrist ID is ' + artistID);
-    // Get request with artist Id grad all the albums from that artist
-
-    const returnAlbums = await fetch(
-      'https://api.spotify.com/v1/artists/' +
-        artistID +
-        '/albums' +
-        '?include_groups=album&market=US&limit=50',
-      searchParameters,
-    )
-      .then(response => response.json())
-      .then(data => {
-        setAlbums(data.items);
-      })
-      .catch(err => console.log(err));
-  }
-  // SEARCH
-
-  const filterName = albums?.filter((album) =>{
-    if(filterName === ''){
-      return album
-    }else if (
-      album.name.includes(filterName)
-    ){
-      return album
-    }
-  })
-useEffect(()=>{
-  search()
-},[])
-  // console.log(albums);
-
+  // const handleFavorite = album => {
+  //   navigation.navigate('FavoriteMusic', {album});
+  // };
+  const filterName1 = () => {
+    const filterName = context.albums.filter(item => {
+      if (searchText === ' ') {
+        return item;
+      } else if (item.name === searchText) {
+        return item;
+      }
+    });
+    context.setAlbums(filterName);
+    setSearchText('');
+  };
   return (
-    <View style={{flex:1,backgroundColor: Colors.background,}}>
+    <View style={{flex: 1, backgroundColor: Colors.background}}>
       <View style={{marginTop: 10}}>
         <SafeAreaView style={styles.safeAreaView}>
           <View>
@@ -128,42 +56,55 @@ useEffect(()=>{
             />
           </View>
           <View style={styles.wrapperInput}>
-            
             <SafeAreaView>
               <TextInput
                 style={styles.input}
-                // onChangeText={searchFilterFunction}
-                // value={number}
+                value={searchText}
                 placeholder="Tìm kiếm..."
+                placeholderTextColor="white"
                 type="input"
                 onKeyPress={e => {
                   if (e.key === 'enter') {
                     search();
                   }
                 }}
-                onChangeText={e => filterName(e.target.value)}
+                onChangeText={text => setSearchText(text)}
               />
             </SafeAreaView>
-            
+            <View>
+              <AntDesign
+                name="search1"
+                onPress={filterName1}
+                style={{
+                  color: '#B0B0B1',
+                  fontSize: 20,
+                  padding: 10,
+                  borderLeftWidth: 1,
+                  borderColor: 'white',
+                }}
+              />
+            </View>
           </View>
           <View>
             <AntDesign
-              // onPress={() => setHeart(!heart)}
-              name="search1"
-              style={{color: '#B0B0B1', fontSize: 20, backgroundColor:'red', padding:10, marginRight:10}}
+              // onPress={() => {
+              //   handleFavorite(album);
+              // }}
+              name="hearto"
+              color={Colors.WHILE}
+              style={{fontSize: 20}}
             />
           </View>
-          {/* <Button
-            
-            title="Search"
-          /> */}
         </SafeAreaView>
       </View>
       <ScrollView>
-        {albums.map((album, index) => {
+        {context.albums?.map((album, index) => {
           return (
             <View key={index}>
-              <TouchableOpacity onPress={()=>{handleTapconveration(album)}}>
+              <TouchableOpacity
+                onPress={() => {
+                  handleTapconveration(album);
+                }}>
                 <View style={styles.rootView}>
                   <View style={styles.image}>
                     <Image
@@ -185,14 +126,14 @@ useEffect(()=>{
                         onPress={() => setHeart(!heart)}
                         name="heart"
                         color={Colors.RED}
-                        style={{ fontSize: 20}}
+                        style={{fontSize: 20}}
                       />
                     ) : (
                       <AntDesign
                         onPress={() => setHeart(!heart)}
                         name="hearto"
                         color={Colors.WHILE}
-                        style={{ fontSize: 20}}
+                        style={{fontSize: 20}}
                       />
                     )}
                     <Ionicons
@@ -229,11 +170,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
     flexDirection: 'column',
+    width: '100%',
   },
   textMusic: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '600',
     color: Colors.WHILE,
+    width: 200,
+    marginTop: 10,
   },
   textName: {
     fontSize: 12,
@@ -259,14 +203,16 @@ const styles = StyleSheet.create({
     width: '70%',
     height: 40,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'white',
     borderRadius: 50,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   input: {
-    width: '100%',
-    color: 'black',
+    color: 'white',
+    paddingLeft: 10,
   },
 });
 
