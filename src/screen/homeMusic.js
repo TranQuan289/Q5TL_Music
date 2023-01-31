@@ -31,13 +31,14 @@ const HomeMusic = ({navigation}) => {
     const filterName = context.albums.filter(item => {
       if (searchText === ' ') {
         return item;
-      } else if (item.name === searchText) {
+      } else if (item.name.toLowerCase() === searchText.toLowerCase()) {
         return item;
       }
     });
     context.setAlbums(filterName);
     setSearchText('');
   };
+
   return (
     <View style={{flex: 1, backgroundColor: Colors.background}}>
       <View style={{marginTop: 10}}>
@@ -85,67 +86,65 @@ const HomeMusic = ({navigation}) => {
               />
             </View>
           </View>
-          <View>
-            <AntDesign
-              // onPress={() => {
-              //   handleFavorite(album);
-              // }}
-              name="hearto"
-              color={Colors.WHILE}
-              style={{fontSize: 20}}
-            />
-          </View>
+          <View></View>
         </SafeAreaView>
       </View>
       <ScrollView>
-        {context.albums?.map((album, index) => {
-          return (
-            <View key={index}>
-              <TouchableOpacity
-                onPress={() => {
-                  handleTapconveration(album);
-                }}>
-                <View style={styles.rootView}>
-                  <View style={styles.image}>
-                    <Image
-                      style={{
-                        height: '100%',
-                        width: '100%',
-                        resizeMode: 'cover',
-                      }}
-                      source={{uri: album.images[0].url}}
-                    />
-                  </View>
-                  <View style={styles.wrapperText}>
-                    <Text style={styles.textMusic}>{album.name}</Text>
-                    <Text style={styles.textName}>{album.release_date}</Text>
-                  </View>
-                  <View style={styles.icon}>
-                    {heart ? (
-                      <AntDesign
-                        onPress={() => setHeart(!heart)}
-                        name="heart"
-                        color={Colors.RED}
-                        style={{fontSize: 20}}
-                      />
-                    ) : (
-                      <AntDesign
-                        onPress={() => setHeart(!heart)}
-                        name="hearto"
-                        color={Colors.WHILE}
-                        style={{fontSize: 20}}
-                      />
-                    )}
-                    <Ionicons
-                      name="ellipsis-vertical"
-                      color={Colors.WHILE}
-                      style={{fontSize: 20, marginLeft: 10}}
-                    />
-                  </View>
+        {context.albums.map((album, index) => {
+          {
+            if (index % 2 === 0 && album.name.length < 27) {
+              console.log(album, index);
+              return (
+                <View key={index}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleTapconveration(album);
+                    }}>
+                    <View style={styles.rootView}>
+                      <View style={styles.image}>
+                        <Image
+                          style={{
+                            height: '100%',
+                            width: '100%',
+                            resizeMode: 'cover',
+                          }}
+                          source={{uri: album.images[0].url}}
+                        />
+                      </View>
+                      <View style={styles.wrapperText}>
+                        <Text style={styles.textMusic}>{album.name}</Text>
+                        <Text style={styles.textName}>
+                          {album.release_date}
+                        </Text>
+                      </View>
+                      <View style={styles.icon}>
+                        {heart ? (
+                          <AntDesign
+                            onPress={() => setHeart(!heart)}
+                            name="heart"
+                            color={Colors.RED}
+                            style={{fontSize: 20}}
+                          />
+                        ) : (
+                          <AntDesign
+                            onPress={() => setHeart(!heart)}
+                            name="hearto"
+                            color={Colors.WHILE}
+                            style={{fontSize: 20}}
+                          />
+                        )}
+                        <Ionicons
+                          name="ellipsis-vertical"
+                          color={Colors.WHILE}
+                          style={{fontSize: 20, marginLeft: 10}}
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
-          );
+              );
+            }
+          }
         })}
       </ScrollView>
       <View></View>

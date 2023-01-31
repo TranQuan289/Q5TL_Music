@@ -61,13 +61,17 @@ function AlbumsProvider({children}) {
     )
       .then(response => response.json())
       .then(data => {
+        // if (data.items) {
+        // console.log(data.items.indexOf(index % 2 == 0));
         setAlbums(data.items);
+        // }
       })
       .catch(err => console.log(err));
   }
   useEffect(() => {
     search();
   }, []);
+  console.log(albums);
   const context = {
     albums,
     setAlbums,

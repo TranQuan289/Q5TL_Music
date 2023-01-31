@@ -9,7 +9,6 @@ import PlayMusic from '../screen/playMusic';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FavoriteMusic from '../screen/favoriteMusic';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,7 +43,7 @@ const HomeTap = ({navigation}) => {
         <Tab.Screen name="Home" component={HomeMusic} />
         <Tab.Screen name="Library" component={ArtistMusic} />
         <Tab.Screen name="Profile" component={ProfileMusic} />
-        <Tab.Screen name="Favorite" component={FavoriteMusic} />
+        {/* <Tab.Screen name="Favorite" component={FavoriteMusic} /> */}
       </Tab.Navigator>
     );
   }
